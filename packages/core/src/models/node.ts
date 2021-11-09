@@ -5,7 +5,7 @@ import { Point } from './point';
 import { anchorsFns, iconRectFns, textRectFns, drawNodeFns } from '../middles';
 import { defaultAnchors } from '../middles/default.anchor';
 import { defaultIconRect, defaultTextRect } from '../middles/default.rect';
-import { text, iconfont } from '../middles/nodes/text';
+import { text, iconfont, text2 } from '../middles/nodes/text';
 import { Store } from 'le5le-store';
 import { abs, distance } from '../utils/math';
 import { s8 } from '../utils/uuid';
@@ -412,6 +412,9 @@ export class Node extends Pen {
     if (this.name !== 'text' && this.text) {
       text(ctx, this);
     }
+    if (this.name !== 'text' && this.text2) {
+      text2(ctx, this);
+    }
   }
 
   strokeLinearGradient(ctx: CanvasRenderingContext2D) {
@@ -666,6 +669,15 @@ export class Node extends Pen {
     let textRect = this.textRect;
     if (!this.icon && !this.image) {
       textRect = this.fullTextRect;
+    }
+
+    return textRect;
+  }
+
+  getTextRect2() {
+    let textRect = this.textRect2;
+    if (!this.icon && !this.image) {
+      textRect = this.fullTextRect2;
     }
 
     return textRect;

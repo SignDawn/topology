@@ -79,6 +79,32 @@ export function getLines(ctx: CanvasRenderingContext2D, pen: Pen) {
   return lines;
 }
 
+export function getLines2(ctx: CanvasRenderingContext2D, pen: Pen) {
+  if (pen.text2 && !pen.text2.split) {
+    pen.text2 += '';
+  }
+  let lines = [];
+
+  switch (pen.whiteSpace2) {
+    case 'nowrap':
+      lines.push(pen.text2);
+      break;
+    case 'pre-line':
+      lines = pen.text2.split(/[\n]/g);
+      break;
+    default:
+      const textRect = pen.getTextRect2();
+      const paragraphs = pen.text2.split(/[\n]/g);
+      for (let i = 0; i < paragraphs.length; ++i) {
+        const l = getWrapLines(ctx, getWords(paragraphs[i]), textRect.width, pen.fontSize2);
+        lines.push.apply(lines, l);
+      }
+      break;
+  }
+
+  return lines;
+}
+
 export function calcTextRect(ctx: CanvasRenderingContext2D, pen: Pen) {
   const lines = getLines(ctx, pen);
   let width = 0;
@@ -235,6 +261,76 @@ export function text(ctx: CanvasRenderingContext2D, node: Pen) {
     lineHeight,
     maxLineLen,
     node.textBackground
+  );
+  ctx.restore();
+}
+
+export function text2(ctx: CanvasRenderingContext2D, node: Pen) {
+  if (!node.text2) {
+    return;
+  }
+  if (!node.text2.split) {
+    node.text2 += '';
+  }
+
+  ctx.save();
+  ctx.beginPath();
+  delete ctx.shadowColor;
+  delete ctx.shadowBlur;
+  ctx.font = `${node.fontStyle2 || 'normal'} normal ${node.fontWeight2 || 'normal'} ${node.fontSize2}px/${node.lineHeight2
+    } ${node.fontFamily2}`;
+
+  if (node.fontColor2) {
+    ctx.fillStyle = node.fontColor2;
+  } else {
+    ctx.fillStyle = Store.get(node.generateStoreKey('LT:fontColor'));
+  }
+  if (node.textAlign2) {
+    ctx.textAlign = node.textAlign2 as any;
+  }
+  if (node.textBaseline2) {
+    ctx.textBaseline = node.textBaseline2 as any;
+  }
+
+  const textRect = node.getTextRect2();
+  if(!textRect){
+    ctx.restore();
+    return;
+  }
+  const lines = getLines2(ctx, node);
+
+  const lineHeight = node.fontSize2 * node.lineHeight2;
+  const maxLineLen = node.textMaxLine2 > 0 && node.textMaxLine2 < lines.length ? node.textMaxLine2 : lines.length;
+
+  // By default, the text is center aligned.
+  let x = textRect.x + textRect.width / 2;
+  let y = textRect.y + (textRect.height - lineHeight * maxLineLen) / 2 + (lineHeight * 4) / 7;
+  switch (ctx.textAlign) {
+    case 'left':
+      x = textRect.x;
+      break;
+    case 'right':
+      x = textRect.x + textRect.width;
+      break;
+  }
+  switch (ctx.textBaseline) {
+    case 'top':
+      y = textRect.y + (lineHeight - node.fontSize2) / 2;
+      break;
+    case 'bottom':
+      y = textRect.ey - lineHeight * maxLineLen + lineHeight;
+      break;
+  }
+  fillText(
+    ctx,
+    lines,
+    x + node.textOffsetX2,
+    y + node.textOffsetY2,
+    textRect.width,
+    textRect.height,
+    lineHeight,
+    maxLineLen,
+    node.textBackground2
   );
   ctx.restore();
 }

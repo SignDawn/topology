@@ -41,7 +41,19 @@ export function defaultTextRect(node: Node) {
     node.rect.width - node.paddingLeftNum - node.paddingRightNum,
     height / 4
   );
+  node.textRect2 = new Rect(
+    node.rect.x + node.paddingLeftNum,
+    node.rect.y + node.paddingTopNum,
+    node.rect.width - node.paddingLeftNum - node.paddingRightNum,
+    height / 4
+  );
   node.fullTextRect = new Rect(
+    node.rect.x + node.paddingLeftNum,
+    node.rect.y + node.paddingTopNum,
+    node.rect.width - node.paddingLeftNum - node.paddingRightNum,
+    height
+  );
+  node.fullTextRect2 = new Rect(
     node.rect.x + node.paddingLeftNum,
     node.rect.y + node.paddingTopNum,
     node.rect.width - node.paddingLeftNum - node.paddingRightNum,

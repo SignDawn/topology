@@ -4,7 +4,7 @@ import { drawLineFns, drawArrowFns } from '../middles';
 import { getBezierPoint } from '../middles/lines/curve';
 import { Store } from 'le5le-store';
 import { lineLen, curveLen } from '../utils/canvas';
-import { text } from '../middles/nodes/text';
+import { text, text2 } from '../middles/nodes/text';
 import { Rect } from './rect';
 import { abs } from '../utils/math';
 
@@ -227,6 +227,13 @@ export class Line extends Pen {
       }
       text(ctx, this);
     }
+
+    if (this.text2 && !this.isAnimate) {
+      if (!this.textRect2) {
+        this.calcTextRect2();
+      }
+      text2(ctx, this);
+    }
   }
 
   pointIn(pt: { x: number; y: number; }) {
@@ -292,10 +299,32 @@ export class Line extends Pen {
     this.textRect = new Rect(center.x - width / 2, center.y - height / 2, width, height);
   }
 
+  calcTextRect2() {
+    const center = this.getCenter();
+    let width = Math.abs(this.from.x - this.to.x);
+    if (width < 100) {
+      width = 100;
+    }
+    if (this.text2 && !this.text2.split) {
+      this.text2 += '';
+    }
+    const height =
+      this.lineHeight2 *
+      this.fontSize2 *
+      (this.textMaxLine2 || (this.text2 && this.text2.split('\n').length) || 1);
+    this.textRect2 = new Rect(center.x - width / 2, center.y - height / 2 - height, width, height);
+  }
+
   getTextRect() {
     // calc every time just in case text line is changed.
     this.calcTextRect();
     return this.textRect;
+  }
+
+  getTextRect2() {
+    // calc every time just in case text line is changed.
+    this.calcTextRect2();
+    return this.textRect2;
   }
 
   getCenter() {

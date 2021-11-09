@@ -63,6 +63,16 @@ const defaultPen: any = {
   textAlign: 'center',
   textBaseline: 'middle',
   textBackground: '',
+  fontColor2: '',
+  fontFamily2:
+    '"Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial',
+  fontSize2: 12,
+  lineHeight2: 1.5,
+  fontStyle2: 'normal',
+  fontWeight2: 'normal',
+  textAlign2: 'center',
+  textBaseline2: 'middle',
+  textBackground2: '',
   animateCycleIndex: 0,
   events: [],
   dash: 0,
@@ -76,6 +86,9 @@ const defaultPen: any = {
   textMaxLine: 0,
   textOffsetX: 0,
   textOffsetY: 0,
+  textMaxLine2: 0,
+  textOffsetX2: 0,
+  textOffsetY2: 0,
   animatePos: 0,
 };
 
@@ -119,6 +132,25 @@ export abstract class Pen {
   fullTextRect: Rect;
   textOffsetX: number;
   textOffsetY: number;
+
+  fontColor2: string;
+  fontFamily2: string;
+  fontSize2: number;
+  lineHeight2: number;
+  fontStyle2: string;
+  fontWeight2: string;
+  textAlign2: string;
+  textBaseline2: string;
+  textBackground2: string;
+
+  text2: string;
+  textMaxLine2: number;
+  whiteSpace2: string;
+  autoRect2: boolean;
+  textRect2: Rect;
+  fullTextRect2: Rect;
+  textOffsetX2: number;
+  textOffsetY2: number;
 
   shadowColor: string;
   shadowBlur: number;
@@ -642,6 +674,7 @@ export abstract class Pen {
   }
 
   abstract getTextRect(): Rect;
+  abstract getTextRect2(): Rect;
   abstract calcRectInParent(parent: Pen): void;
   abstract calcRectByParent(parent: Pen): void;
   abstract draw(ctx: CanvasRenderingContext2D): void;
