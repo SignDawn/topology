@@ -389,7 +389,7 @@ export class PenPropsComponent implements OnInit, OnChanges {
       if (typeof this.pen.data === 'string') {
         try {
           this.data = JSON.parse(JSON.stringify(this.pen.data));
-        } catch {
+        } catch (e) {
           this.customInput = true;
         }
       }
@@ -825,7 +825,7 @@ export class PenPropsComponent implements OnInit, OnChanges {
     } else {
       try {
         this.data = JSON.parse(JSON.stringify(this.pen.data));
-      } catch {
+      } catch (e) {
         this.customInput = true;
       }
     }

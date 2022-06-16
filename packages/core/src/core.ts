@@ -280,7 +280,7 @@ export class Topology {
           pt.y
         );
         this.activeLayer.calcActiveRect();
-      } catch { }
+      } catch (e) {}
     };
 
     if (isMobile()) {
